@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Vue JS -->
+    <script src="vue.js"></script>
+
+    <title>Tebak Angka!</title>
+  </head>
+  <body>
+    
+    <div class="container" id="app">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#"><b>Game Sederhana - Tebak Angka</b></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+
+        <div class="alert alert-primary mt-2" role="alert">
+            Peraturan & Info:
+                <br> 1. Permainan ini akan meminta user untuk menebak angka dari 1 - 10
+                <br> 2. Tekanlah tombol Start Game untuk memulai permainan
+                <br> 3. Tebaklah angka yang sekiranya menurut anda benar
+                <br> 4. Tekanlah tombol Tebak apabila anda telah yakin dengan angka_tebakan anda 
+                <br> 4. Anda memiliki kesempatan 3x untuk menebak angka, lebih dari itu anda gagal 
+        </div>
+
+        <div class="card border-dark mb-5 mt-4">
+            <div class="card-header text-center h3"><b>Main Game Disini!</b></div>
+            <div class="card-body text-dark">
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="px-5 btn btn-primary" @click="rand_number"><b>START GAME!</b></button>
+                    <input class="ml-3 p-2" v-model="chosen_number" type="password" disabled>
+                </div>
+                <span v-if="chosen_number!=''">
+                    <div class="mt-3 d-flex justify-content-center">
+                        <p class="text-danger"><b>Hayo Silahkan Ditebak Angka Berapakah Itu?</b></p>
+                    </div>
+                    <div class="mx-auto alert alert-success" role="alert" style="max-width: 500px;">
+                        <div class="text-center">
+                            <b>TEBAK DISINI</b>
+                        </div>
+                        <div class="mt-3 text-center">
+                            <input type="number" v-model="angka_tebak" class="form-control mb-4" placeholder="Tebak Angka">
+                            <span v-if="attempt < 3">
+                                <div class="d-flex justify-content-center">
+                                    <button type="button" class="btn btn-primary" @click="tebak_angka">TEBAK</button>
+                                    <div class="ml-2 d-flex align-items-center">Attempt: {{ attempt }}</div>
+                                </div>
+                                <p class="mt-3"><b>{{ answer }}</b></p>
+                                <button type="button" class="btn btn-danger" @click="restart_game">Restart Game</button>
+                            </span>
+                            <span v-else>
+                                <div class="ml-2 d-flex justify-content-center">
+                                    <p class="text-danger mr-2"><b>Kesempatan Habis! Anda Gagal</b></p><br>
+                                    <p>Jawaban Benar: {{ rand_number_answer }}</p>
+                                </div>
+                                <button type="button" class="btn btn-danger" @click="restart_game">Restart Game</button>
+                            </span>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+          <!-- Footer-->
+        <footer class="footer mt-5 py-4 bg-dark" role="contentinfo">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col text-center">
+                        <a class="text-white">{{ footer }}</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        new Vue({
+            el:"#app",
+            data:
+            {
+                attempt:0,
+                angka_tebak:'',
+                chosen_number:'',
+                answer:'',
+                rand_number_answer:'',
+                footer:'Yohanes Yobel Yuantomo | 180709715 | Kelas A',
+                angka:['1','2','3','4','5','6','7','8','9','10'],
+            },
+            methods: 
+            {
+                tebak_angka:function()
+                {
+                    if(this.chosen_number == this.angka_tebak)
+                    {
+                        this.answer = 'Jawaban Anda Benar!';
+                    }
+                    else
+                    {
+                        this.answer = 'Jawaban Anda Salah!';
+                        this.attempt++;
+                    }
+                },
+                
+                restart_game:function()
+                {
+                    this.attempt = 0,
+                    this.angka_tebak = '',
+                    this.chosen_number = '',
+                    this.rand_number_answer = '',
+                    this.answer = '';
+                },
+
+                rand_number:function()
+                {
+                    var rand_number = Math.floor(Math.random() * this.angka.length);
+                    this.chosen_number = this.angka[rand_number];
+                    this.rand_number_answer = this.angka[rand_number];
+                }
+            },
+        });
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
