@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Vue JS -->
+    <script src="vue.js"></script>
+
+    <title>To Do List</title>
+  </head>
+  <body>
+    <div class="container" id="app">
+        <div class="title text-center my-4">
+            <a class="h3 font-weight-bold">My To Do List</a>
+        </div>
+        <div class="mx-auto">
+            <div class="list bg-light mx-auto p-5 mb-4" style="width: 60%; max-height: 540px; overflow-y: auto;">
+                <div v-for="todo in todos">
+                    <div class="card border-secondary mb-3 w-100">
+                        <div class="card-header bg-white">
+                            <span v-if="todo.priority == 'Penting'">
+                                <a class="alert-danger text-danger px-2 py-1 rounded">{{ todo.priority }}</a>
+                            </span>
+                            <span v-if="todo.priority == 'Biasa'">
+                                <a class="alert-primary text-info px-2 py-1 rounded">{{ todo.priority }}</a>
+                            </span>
+                            <span v-if="todo.priority == 'Tidak Penting'"> 
+                                <a class="alert-success text-success px-2 py-1 rounded">{{ todo.priority }}</a>
+                            </span>
+                            <button type="button" class="close" aria-label="Close" @click="removeTodo(todo)">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="card-body text-dark">
+                          <h5 class="card-title">{{ todo.title }}</h5>
+                          <p class="card-text">{{ todo.catatan }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light mx-auto p-5" style="width: 60%;">
+                <form @submit.prevent="storeTodo">
+                    <div class="form-group">
+                      <label for="newTodo">Apa Yang Mau Kamu Kerjakan?</label>
+                      <input type="text" class="form-control" id="newTodo" v-model="newTodo" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="newPriority">Penting Gak?</label>
+                      <select class="form-control" id="newPriority" v-model="newPriority" required>
+                        <option value="Penting">Penting</option>
+                        <option value="Biasa">Biasa</option>
+                        <option value="Tidak Penting">Tidak Penting</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="newCatatan">Ada Catatan Penting?</label>
+                      <textarea class="form-control" id="newCatatan" rows="3" v-model="newCatatan"></textarea>
+                    </div>
+                    <button class="btn-dark btn text-white" type="reset">Reset</button>
+                    <button class="btn-success btn text-white" type="submit">Simpan</button>
+                  </form>
+            </div>
+
+            <!-- Footer-->
+            <footer class="footer mt-5 py-4 bg-dark mx-auto" role="contentinfo" style="width: 60%;">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col text-center">
+                            <a class="text-white">{{ footer }}</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el:"#app",
+            data:
+            {
+                footer:'Yohanes Yobel Yuantomo | 180709715 | Kelas A',
+                newTodo: '',
+                newPriority: '',
+                newCatatan: '',
+                todos: [
+                    { title: "Masak Nasi", priority: "Penting", catatan: "Masak Nasi Lah Biar Bisa Makan" },
+                    { title: "Mulung", priority: "Biasa", catatan: "Mulung Besok Di Kampus" },
+                    { title: "Kerja Tugas PAW", priority: "Tidak Penting", catatan: "Hehehehehe" },
+                ],
+            },
+
+            methods:
+            {
+                storeTodo() {
+                    this.todos.push({
+                        title: this.newTodo,
+                        priority: this.newPriority,
+                        catatan: this.newCatatan,
+                    });
+                    this.newTodo = '';
+                    this.newPriority = '';
+                    this.newCatatan = '';
+                },
+
+                removeTodo(todo) {
+                    const todoIndex = this.todos.indexOf(todo);
+                    this.todos.splice(todoIndex, 1);
+                },
+            },
+        });
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
